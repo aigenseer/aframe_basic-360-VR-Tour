@@ -4,6 +4,11 @@ This basic basic-360-VR-Tour is a starting point for your WebVR tour. Replace th
 
 The basic-360-VR-Tour for AFrame was created by Viktor Aigenseer.
 
+## Wikiversity Tutorial
+It is recommended to add a [tutorial in Wikiversity](https://en.wikiversity.org/wiki/3D_Modelling/Create_3D_Models/Hugin) to learn about this WebVR tour and to create your create. Regard the basic tour from Viktor Aigenseer as a starting point. Two basic skills are necessary.
+* Create 360 Degree Images with  [Hugin](http://hugin.sourceforge.net/download/) and
+* [JavaScript skills](https://en.wikiversity.org/wiki/JavaScript) to adapt this basic tour to your needs.
+
 ## AFrame
 AFrame is web framework for building virtual reality in a Browser. Exploration of constructed 3D scenes or 360 degree images are possible.
 
