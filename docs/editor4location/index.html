@@ -100,7 +100,7 @@
     	<h1>WebVR Location Editor - JSON</h1>
 
   <div data-role="fieldcontain" style="display:none">
-         <input type="file" id="fileJSON" name="fileJSON" value="Select JSON File" id="fileJSON" onchange="loader4JSON(this.id)"/>
+         <input type="file" id="fileJSON" name="fileJSON" value="Select JSON File" id="fileJSON" onchange="vJSONEditor.loadJSON(this.id)"/>
     </div>
 
   	<div id="divNavigate"  align="center">
@@ -117,11 +117,12 @@
 		&nbsp;
 		&nbsp;
     <!-- Function: exportCode() is defined in js/classeditor.js -->
-    <button id='bExportHTML' style="color: white;background-color: #225988"  onclick="vJSONEditor.save4Template('javascript','.js','Javascript Code for Class');return false">
+      <button id='bExportHTML' style="color: white;background-color: #225988;display:none"  onclick="vJSONEditor.save4Template('javascript','.js','Javascript Code for Class');return false">
 			<i class="fa fa-floppy-o" aria-hidden="true"></i> Export Code
 	 </button>
    <!-- Function: exportDocumentation() is defined in js/classeditor.js -->
-   <button id='bExportDoc' style="color: white;background-color: #225988"  onclick="vJSONEditor.save4Template('docu4github','_github.md','Github Documentation for Class');return false">
+
+   <button id='bExportDoc' style="color: white;background-color: #225988;display:none"  onclick="vJSONEditor.save4Template('docu4github','_github.md','Github Documentation for Class');return false">
      <i class="fa fa-floppy-o" aria-hidden="true"></i> Export Documentaion
   </button>
     <!--

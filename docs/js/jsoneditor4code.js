@@ -1,7 +1,7 @@
 /* ---------------------------------------
  Exported Module Variable: JSONEditor4Code
  Package:  jsoneditor4code
- Version:  0.9.1  Date: 2018/05/17 23:14:15
+ Version:  0.9.1  Date: 2018/05/18 16:11:12
  Homepage: https://niebert.github.io/ClassEditorUML
  Author:   Engelbert Niehaus
  License:  MIT
@@ -2913,31 +2913,6 @@ function deleteClass() {
   //editor.setValue(vDataJSON["UML_DEFAULT"]);
 }
 
-function X_validate_errors() {
-  // Get an array of errors from the validator
-  var errors = editor.validate();
-
-  var indicator = document.getElementById('valid_indicator');
-
-  // Not valid
-  if(errors.length) {
-    indicator.style.color = 'red';
-    indicator.textContent = "not valid";
-  }
-  // Valid
-  else {
-    indicator.style.color = 'green';
-    indicator.textContent = "valid";
-  };
-  var vErrors = "";
-  var vCR = "";
-  for (var i = 0; i < errors.length; i++) {
-    vErrors +=  vCR + errors[i].path + " - " +errors[i].property +" - "+errors[i].message;
-    vCR = "\n";
-  };
-  document.getElementById("tErrors").value = vErrors;
-}
-
 function update_editor(pJSON) {
   var vJSON = pJSON || editor.getValue();
   $('#display_filename').html(class2filename(vJSON.data.classname,".json"));
@@ -3016,46 +2991,6 @@ function class2filename(pClassName,pExt) {
 }
 
 
-function X_exportCode() {
-  //-- Javascript Class Output --
-  //-- Template: tpl/javascript_class_tpl.js
-  var vJSON = editor.getValue();
-  updateModified(vJSON);
-  //-- HandleBars: Compile with javascript-template ---
-  // vDataJSON["out"]["javascript"] is HandleBars compiler function
-  // Compile functions was generated from "tpl/javascript_class_tpl.js"
-  var vContent = vDataJSON["out"]["javascript"](vJSON);
-  //--JSON Output----------------
-  var vExt = vJSON.settings.extension4code || ".json";
-  var vFile = class2filename(vJSON.data.classname,vExt);
-  vContent = postProcessHandlebars(vContent,vJSON);
-  //--Textarea Output----------------
-  var vOutNode = document.getElementById("tOutput");
-  vOutNode.value = vContent;
-  saveFile2HDD(vFile,vContent);
-  alert("Export Code for Class to '"+vFile+"'");
-};
-
-
-function X_exportDocumentation() {
-  //-- GitHub Class Documentation Output in GitHub Markdown--
-  //-- Template: tpl/docu4github_tpl.js
-  var vJSON = editor.getValue();
-  updateModified(vJSON);
-  //-- HandleBars: Compile with javascript-template ---
-  // vDataJSON["out"]["javascript"] is HandleBars compiler function
-  // Compile functions was generated from "tpl/docu4github_tpl.js"
-  var vContent = vDataJSON["out"]["docugithub"](vJSON);
-  vContent = postProcessHandlebars(vContent,vJSON);
-  //--Textarea Output----------------
-  var vOutNode = document.getElementById("tOutput");
-  vOutNode.value = vContent;
-  //--JSON Output----------------
-  var vFile = "README_"+class2filename(vJSON.classname,".md");
-  saveFile2HDD(vFile,vContent);
-  alert("Export GitHub Documentation for Class to '"+vFile+"'");
-};
-
 function loader4JSON(pFileID4DOM) {
   var fileToLoad = document.getElementById(pFileID4DOM).files[0]; //for input type=file
   if (fileToLoad) {
@@ -3114,8 +3049,6 @@ function getTimeIndex() {
 	var d = new Date();
   return d.getTime();
 };
-/*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
-var saveAs=saveAs||function(e){"use strict";if(typeof e==="undefined"||typeof navigator!=="undefined"&&/MSIE [1-9]\./.test(navigator.userAgent)){return}var t=e.document,n=function(){return e.URL||e.webkitURL||e},r=t.createElementNS("http://www.w3.org/1999/xhtml","a"),o="download"in r,a=function(e){var t=new MouseEvent("click");e.dispatchEvent(t)},i=/constructor/i.test(e.HTMLElement)||e.safari,f=/CriOS\/[\d]+/.test(navigator.userAgent),u=function(t){(e.setImmediate||e.setTimeout)(function(){throw t},0)},s="application/octet-stream",d=1e3*40,c=function(e){var t=function(){if(typeof e==="string"){n().revokeObjectURL(e)}else{e.remove()}};setTimeout(t,d)},l=function(e,t,n){t=[].concat(t);var r=t.length;while(r--){var o=e["on"+t[r]];if(typeof o==="function"){try{o.call(e,n||e)}catch(a){u(a)}}}},p=function(e){if(/^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(e.type)){return new Blob([String.fromCharCode(65279),e],{type:e.type})}return e},v=function(t,u,d){if(!d){t=p(t)}var v=this,w=t.type,m=w===s,y,h=function(){l(v,"writestart progress write writeend".split(" "))},S=function(){if((f||m&&i)&&e.FileReader){var r=new FileReader;r.onloadend=function(){var t=f?r.result:r.result.replace(/^data:[^;]*;/,"data:attachment/file;");var n=e.open(t,"_blank");if(!n)e.location.href=t;t=undefined;v.readyState=v.DONE;h()};r.readAsDataURL(t);v.readyState=v.INIT;return}if(!y){y=n().createObjectURL(t)}if(m){e.location.href=y}else{var o=e.open(y,"_blank");if(!o){e.location.href=y}}v.readyState=v.DONE;h();c(y)};v.readyState=v.INIT;if(o){y=n().createObjectURL(t);setTimeout(function(){r.href=y;r.download=u;a(r);h();c(y);v.readyState=v.DONE});return}S()},w=v.prototype,m=function(e,t,n){return new v(e,t||e.name||"download",n)};if(typeof navigator!=="undefined"&&navigator.msSaveOrOpenBlob){return function(e,t,n){t=t||e.name||"download";if(!n){e=p(e)}return navigator.msSaveOrOpenBlob(e,t)}}w.abort=function(){};w.readyState=w.INIT=0;w.WRITING=1;w.DONE=2;w.error=w.onwritestart=w.onprogress=w.onwrite=w.onabort=w.onerror=w.onwriteend=null;return m}(typeof self!=="undefined"&&self||typeof window!=="undefined"&&window||this.content);if(typeof module!=="undefined"&&module.exports){module.exports.saveAs=saveAs}else if(typeof define!=="undefined"&&define!==null&&define.amd!==null){define("FileSaver.js",function(){return saveAs})}
 /* ---------------------------------------
  Exported Module Variable: Handlebars4Code
  Package:  handlebars4code
@@ -8469,6 +8402,10 @@ var Handlebars4Code = {
   "compile_code": compile_code,
   "get_compiler": get_compiler
 };
+function saveFile2HDD(pFilename,pContent) {
+  var file = new File([pContent], {type: "text/plain;charset=utf-8"});
+  saveAs(file,pFilename);
+}
 /*! JSON Editor v0.7.28 - JSON Schema -> HTML Editor
  * By Jeremy Dorn - https://github.com/jdorn/json-editor/
  * Released under the MIT license
@@ -17371,10 +17308,11 @@ function JSONEditor4Code (pDocument) {
   this.aJSON = {};
   this.aDefaultJSON = {};
   this.aSchema = null;
-  this.aOptions = Options = {
+  this.aOptions = {
     "editor_id": "editor_holder",
     "validator_id":"valid_indicator",
     "load_file_id" : "load_filename",
+    "filename_key" : "filename",
     "out_json": "tOutJSON",
     "out_code": "tOutput",
     "out_errors": "tErrors"
@@ -17647,7 +17585,12 @@ function JSONEditor4Code (pDocument) {
     var vNode = this.el(this.aOptions["filename_id"]); // e.g. filename_id = "load_filename";
     if (vNode) {
         var vJSON = this.getValue();
-        vNode.innerHTML = class2filename(vJSON.data.classname)+vJSON.settings.extension4code;
+        var vPath = this.aOptions["filename_key"];
+        if (vJSON.data) {
+          if (vJSON.data.hasOwnProperty()) {
+            vNode.innerHTML = class2filename(vJSON.data.classname)+vJSON.settings.extension4code;
+          }
+        };
     } else {
         console.log("DOM node ["+this.aOptions["filename_id"]+"] not found");
     };
@@ -17763,7 +17706,7 @@ function JSONEditor4Code (pDocument) {
           //document.getElementById("inputTextToSave").value = textFromFileLoaded;
           //alert("textFromFileLoaded="+textFromFileLoaded);
           try {
-            vThis.aEtditor.setValue(JSON.parse(vTextFromFileLoaded));
+            vThis.aEditor.setValue(JSON.parse(vTextFromFileLoaded));
             alert("File JSON '"+fileToLoad.name+"' loaded successfully!");
             vThis.validate_errors();
           } catch(e) {
@@ -17779,12 +17722,38 @@ function JSONEditor4Code (pDocument) {
     this.saveLS("jsondata");
   }
 
+  this.getClassname4File = function () {
+    return class2filename(this.aJSON.data.classname,"_uml.json");
+  }
+
+  this.getFilename = function() {
+    var vFilename = "jsondata.json";
+    if (this.aJSON) {
+      if (this.aJSON.data) {
+        if (this.aJSON.data.classname) {
+          vFilename = this.getClassname4File(this.aJSON.data.classname);
+        }
+      }
+    };
+    return vFilename;
+  }
+
+  this.setFilename = function (pFilename) {
+    if (this.aJSON) {
+      if (this.aJSON.data) {
+        if (this.aJSON.data.classname) {
+          this.aJSON.data.classname = pFilename;
+        }
+      }
+    };
+  }
+
   this.saveJSON = function () {
     // Get the value from the editor
     //alert("saveJSON()-Call");
     var vJSON = this.aEditor.getValue();
     this.saveLS("jsondata");
-    var vFile = class2filename(this.aJSON.data.classname,"_uml.json");
+    var vFile = this.getFilename();
    // set modified date in reposinfo.modified
     this.update_modified();
     var vContent = JSON.stringify(vJSON,null,4);
@@ -17848,7 +17817,10 @@ function JSONEditor4Code (pDocument) {
       if (this.aJSON.reposinfo) {
         this.aJSON.reposinfo.modified = getDateTime();
         console.log("reposinfo.modified updated with: '"+this.aJSON.reposinfo.modified+"'");
+      } else {
+        console.log("this.aJSON.reposinfo.modified was undefined - src/libs/exportmod.js:518");
       }
     };
   }
+
 }; // end JSONEditor4Code
