@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Class Editor UML</title>
+    <link href="jquery/jquery-ui.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+     <link href="css/bootstrap.min.css" rel="stylesheet">
+     <!-- Font-Awesome CSS -->
+     <link href="css/font-awesome.min.css" rel="stylesheet">
+     <!-- ACE Editor -->
+     <script src="ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+     <script src="jquery/external/jquery/jquery.js" type="text/javascript"></script>
+     <!-- JSON Editor for Code Generation -->
+     <script src="js/jsoneditor4code.js"></script>
+
+    <script>
+    // vDataJSON is the main JSON storage for the privacy friendly WebApp
+    // File Loaded into vDataJSON by script tag
+    var vDataJSON = {};
+    vDataJSON.tpl = {};
+    /* TEMPLATES
+    vDataJSON.tpl contains the following templates:
+      * vDataJSON.tpl["javascript"] File: tpl/javascript_tpl.js
+        for creating the the Source Code for the UML class in javascript
+      * vDataJSON.tpl["docu4github"] File: tpl/docu4github_tpl.js
+        for creating the GitHub documentation from the UML source of the class
+    */
+
+    vDataJSON.out = {};
+    /* HANDLEBARS COMPILERS
+    vDataJSON.tpl contains the Handlebars compilers:
+      * vDataJSON.out["javascript"] Compiler for template: tpl/javascript_tpl.js
+        This compiler is used in the compileCode() method
+        var mySource = vJSONEditor.compileCode.javascript(pJSON)
+        creates the source code for the UML class in javascript
+      * vDataJSON.out["docu4github"] Compiler for template: tpl/docu4github_tpl.js
+        This compiler is used in the compileCode() method
+        var mySource = vJSONEditor.compileCode.docu4github(pJSON)
+    */
+    var vFileBase = "class";
+    // ACE Editor is used in JSONEditor for Code Editor
+    var vProgLanguage = "javascript";
+    /*
+    Defined the Syntax Highlighting for ACE Editor - Used in Schema "schema/class_schema.js"
+      * set the default CSS theme and icon library globally
+      * see https://www.github.com/niebert/json-editor for further details
+    */
+    //---- Initialize Editor with JSON --------------
+    // The JSON data is defined in file "db/umljs.js"
+    var vJSON = vDataJSON["umljs"];
+    //---- Create one JSON Editor for Code ---------
+    var vJSONEditor = new JSONEditor4Code(document);
+    /*
+      "editor_id": DOM id where the editor will be injected,
+    */
+    var vOptions = {
+            "editor_var": "vJSONEditor",
+            "editor_id": "editor_holder",
+            "validator_id":"valid_indicator",
+            "filejson_id" : "fileJSON",
+            "filename_id" : "display_filename",
+            "out_json": "tOutJSON",
+            "out_code": "tOutput",
+            "out_errors": "tErrors"
+    };
+    var vDefaultID4JSON = "uml_default"; //see file "db/uml_default.js"
+    //console.log("Edit JSON:\n"+JSON.stringify(vJSON,null,3));
+    // vJSONEditor.init(...) will be called at very end of this file
+    </script>
+    <!-- ### UML Default File  #####################
+    used for initializing afte delete class command
+    -->
+    <script src="db/uml_default.js"></script>
+    <!-- ### UML Loaded File  ##################### -->
+    <script src="db/umljs.js"></script>
+    <!-- ### HANDLEBARS TEMPLATE  #####################
+    Template ID: "javascript"
+    Template: vDataJSON["tpl"]["javascript"]
+    -->
+    <script src="tpl/javascript_tpl.js"></script>
+    <!-- ### COMPILE HANDLEBARS TEMPLATES  ############
+    Template ID: "docu4github"
+    Template: vDataJSON["tpl"]["docu4github"]
+    -->
+    <script src="tpl/docu4github_tpl.js"></script>
+    <!-- ### SCHEMA LOADER ############################
+    script tag stores the JSON schema in
+    vDataJSON["class_schema"]
+    -->
+    <script src="schema/locations_schema.js"></script>
+    <!-- ############################################## -->
+    <script>
+    // Delete JSON load the following default JSON into JSON Editor for Code
+    var vDefaultJSON = vDataJSON[vDefaultID4JSON]; //see file "db/uml_default.js"
+    </script>
+  </head>
+  <body  style="margin:20px">
+  	<div>
+    	<h1>WebVR Location Editor - JSON</h1>
+
+  <div data-role="fieldcontain" style="display:none">
+         <input type="file" id="fileJSON" name="fileJSON" value="Select JSON File" id="fileJSON" onchange="loader4JSON(this.id)"/>
+    </div>
+
+  	<div id="divNavigate"  align="center">
+    <!-- the button vOpenJSON generates an onclick event for the fileJSON input file element in the DOM -->
+ 	 	<button id='bOpenJSON' style="color: white;background-color: #225988"  onclick="$( '#fileJSON' ).trigger('click');return false">
+			<i class="fa fa-folder-open-o" aria-hidden="true"></i> Load
+		</button>
+    <button id='bSaveJSON' style="color: white;background-color: #225988"  onclick="vJSONEditor.saveJSON();return false">
+			<i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+		</button>
+   &nbsp;
+		&nbsp;
+    <b>File: </b>  <tt id="display_filename">class.json</tt>
+		&nbsp;
+		&nbsp;
+    <!-- Function: exportCode() is defined in js/classeditor.js -->
+    <button id='bExportHTML' style="color: white;background-color: #225988"  onclick="vJSONEditor.save4Template('javascript','.js','Javascript Code for Class');return false">
+			<i class="fa fa-floppy-o" aria-hidden="true"></i> Export Code
+	 </button>
+   <!-- Function: exportDocumentation() is defined in js/classeditor.js -->
+   <button id='bExportDoc' style="color: white;background-color: #225988"  onclick="vJSONEditor.save4Template('docu4github','_github.md','Github Documentation for Class');return false">
+     <i class="fa fa-floppy-o" aria-hidden="true"></i> Export Documentaion
+  </button>
+    <!--
+		<button id='bAddRecord' style="color: white;background-color: #225988"  onclick="vEditor4JSON.add();return false">
+			<i class="fa fa-plus-square" aria-hidden="true"></i> Add
+		</button>
+    <button id='bInitDB' style="color: white;background-color: #c10303"  onclick="vEditor4JSON.initAsk();return false">
+      <i class="fa fa-minus-square" aria-hidden="true"></i> Init DB
+    </button>
+    -->
+		<button id='bDeleteClass' style="color: white;background-color: #c10303;display:none"  onclick="vJSONEditor.init_ask();return false">
+			<i class="fa fa-minus-square" aria-hidden="true"></i> Delete Class
+		</button>
+
+    <span id='valid_indicator'></span>
+	</div>
+	<!-- BEGIN of JSON Editor -->
+    <div id='editor_holder' style="margin:20px"></div>
+	<!-- END of JSON Editor -->
+    <button id='restore' style="display:none" onclick="vJSONEditor.restore();return false">Restore to Default</button>
+    <button id='enable_disable' style="display:none" onclick="vJSONEditor.toggleEnable();return false">Disable/Enable</button>
+    <button id='submit' Xstyle="display:none" onclick="vJSONEditor.submit2callback();return false">Submit</button>
+    <button id='bExportJSON' onclick="vJSONEditor.saveJSON();return false">Export JSON</button>
+    <button id='bExportSchemaJSON'  onclick="vJSONEditor.saveSchema();return false">Export JSON Schema</button>
+    <button id='bUpdateSchema' style="color: white;background-color: #225988;display:none"  onclick="vJSONEditor.update();return false">
+      <i class="fa fa-refresh" aria-hidden="true"></i>
+      Update Schema
+    </button>
+		<button id='bTemplate' onclick="$('#divTemplates').toggle()">Debug Output</button>
+<hr>
+<center>
+  <a href="https://github.com/niebert/ClassEditorUML" target="_blank">Repository on GitHub</a> - <a href="https://github.com/niebert/ClassEditorUML/archive/master.zip" target="_blank">Download ZIP from GitHub</a> - (2018)
+</center>
+    <div id="divTemplates" style="display:none">
+      <b>Output</b> <tt>[tOutput]</tt><br>
+      <form id="fSubmitJSONdata" action="jsondata2submit.html" method="get" target="_blank">
+        <textarea id="tOutput" name="jsondata" cols="125" rows="10"></textarea>
+        <br>
+        <input type="submit">
+      </form>
+      <hr>
+      <b>JSON</b> <tt>[tOutJSON]</tt><br>
+      <textarea id="tOutJSON" name="tOutJSON" cols="125" rows="10"></textarea>
+      <hr>
+      <b>JSON Errors</b> <tt>[tErrors]</tt><br>
+      <textarea id="tErrors" name="tErrors" cols="125" rows="10">
+      </textarea>
+    <hr>
+
+    </div>
+
+    <script>
+      //---- Initialize the JSONEditor for Code ----------
+      // Initialization expect certain DOM nodes to be available,
+      // so that event handlers can assigned e.g. to buttons.
+      // Therefore the init method is called
+      // at the very end of the HTML file.
+
+      vJSONEditor.init(vJSON,
+        vDefaultJSON,
+        vDataJSON["class_schema"],
+        vDataJSON["tpl"],
+        vOptions);
+    </script>
+
+
+
+  </body>
+</html>

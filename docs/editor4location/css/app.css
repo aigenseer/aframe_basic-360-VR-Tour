@@ -1,0 +1,27 @@
+.bodyui {
+  overflow-y:scroll;
+}
+#mapPage, #map {
+  height: 100%;
+}
+
+#map-content{
+  height: 100%;
+  padding: 0px;
+  margin:0px;
+  z-index: -1;
+}
+#curLoc{
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+}
+
+input[type=file] {
+    padding:5px 15px;
+    background:#ccc;
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}

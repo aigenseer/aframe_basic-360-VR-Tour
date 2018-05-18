@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Receiver of Params</title>
+    <script src="js/linkparam.js"></script>
+  </head>
+  <body>
+    <h3>
+    Link Parameter Key:
+  	 <tt id="keyout">myparam</tt>
+    </h3>
+
+  	  <textarea id="textout" rows="20" cols="120">undefined content</textarea>
+    <script>
+      var vKey = "jsondata";
+  		var vLinkParam = new LinkParam();
+  		vLinkParam.init(document);
+  		if (vLinkParam.exists(vKey)) {
+  			var vPar = vLinkParam.getValue(vKey);
+  			//alert(vPar);
+        document.getElementById("keyout").innerHTML = vKey;
+        alert("Link Parameter '"+vKey+"' exists!")
+        var vJSON = null;
+        try {
+            vJSON = JSON.parse(vPar);
+        } catch(e) {
+            alert("ERROR: "+ e)
+        };
+        if (vJSON) {
+          vPar = JSON.stringify(vJSON,null,4);
+        }
+  			document.getElementById("textout").value = vPar;
+  		} else {
+  			alert("Receiver needs a LinkParameter 'myparam'")
+  		}
+  	</script>
+  </body>
+</html>

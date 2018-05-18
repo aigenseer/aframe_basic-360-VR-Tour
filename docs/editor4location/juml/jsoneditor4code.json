@@ -1,0 +1,108 @@
+{
+    "data": {
+        "classname": "JSONEditor4Code",
+        "superclassname": "",
+        "comment": "The class provides an constructor for a JSON Editor for Code Generation. The work is based on Jeremy Dorns great JSON editor. This class adds the HandleBars template engine for generation of source based on a UML class definition. ",
+        "reposinfo": {
+            "repository": "https://www.github.com/author/NewClass",
+            "require_classes": "yes",
+            "author": "My Name",
+            "email": "name@example.com",
+            "created": "23.04.2018",
+            "modified": "01.05.2018",
+            "requirelist": [
+                "handlebars",
+                "filesaver",
+                "jquery"
+            ]
+        },
+        "attributes": [
+            {
+                "visibility": "public",
+                "name": "editor",
+                "init": "new JSONEditor()",
+                "class": "JSONEditor",
+                "comment": "Contains the JSON Editor for handling the UML model for the class"
+            },
+            {
+                "visibility": "public",
+                "name": "aJSON",
+                "init": "null",
+                "class": "Hash",
+                "comment": "contains the data submitted to the JSON Editor (via URL parameter/query string - which includes the list of classes that can be used in this class definition"
+            }
+        ],
+        "methods": [
+            {
+                "visibility": "public",
+                "name": "update_schema",
+                "parameter": [],
+                "return": "Boolean",
+                "comment": "User has update the list of classes and then the selector for classes in the editor must be updated. \nThis requires an update of the JSON editor and therefore a restart of the editor.",
+                "code": "pVar2 = pVar1 + pVar2;"
+            },
+            {
+                "visibility": "public",
+                "name": "init",
+                "parameter": [
+                    {
+                        "name": "pJSON",
+                        "class": "Hash",
+                        "comment": "the parameter stores JSON definition for the class"
+                    },
+                    {
+                        "name": "pOptions",
+                        "class": "Hash",
+                        "comment": "the parameter stores the options for the JSON editor (developed by Jeremy Dorn)"
+                    },
+                    {
+                        "name": "pSchema",
+                        "class": "Hash",
+                        "comment": "the parameter contains the JSON Schema for JSON Editor"
+                    }
+                ],
+                "return": "",
+                "comment": "the method initializes the JSON editor with the defined schema, updates the class selector in the schema with the classlist in JSON data. ",
+                "code": "// insert your code here"
+            }
+        ]
+    },
+    "settings": {
+        "classlist": [
+            "",
+            "App",
+            "AppAbstract",
+            "Array",
+            "Boolean",
+            "Float",
+            "Function",
+            "Hash",
+            "Integer",
+            "JSONEditor",
+            "LinkParam",
+            "Object",
+            "RegularExp",
+            "String"
+        ],
+        "localclasslist": [
+            "App",
+            "AppAbstract"
+        ],
+        "remoteclasslist": [
+            "LinkParam",
+            "JSONEditor"
+        ],
+        "baseclasslist": [
+            "",
+            "Array",
+            "Boolean",
+            "Float",
+            "Function",
+            "Hash",
+            "Integer",
+            "Object",
+            "RegularExp",
+            "String"
+        ]
+    }
+}
