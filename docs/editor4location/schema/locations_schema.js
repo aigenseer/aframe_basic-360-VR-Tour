@@ -102,7 +102,7 @@ vDataJSON["class_schema"] = {
                         {
                             "type": "object",
                             "id": "/items/properties/e/oneof0",
-                            "title": "Title array0 /items/properties/e",
+                            "title": "a-image",
                             "options": {
                                 "disable_collapse": false,
                                 "disable_edit_json": false,
@@ -439,7 +439,7 @@ vDataJSON["class_schema"] = {
                         {
                             "type": "object",
                             "id": "/items/properties/e/oneof1",
-                            "title": "Title array1 /items/properties/e",
+                            "title": "Tag a-text",
                             "options": {
                                 "disable_collapse": false,
                                 "disable_edit_json": false,
@@ -638,7 +638,7 @@ vDataJSON["class_schema"] = {
                         {
                             "type": "object",
                             "id": "/items/properties/e/oneof2",
-                            "title": "Title array2 /items/properties/e",
+                            "title": "Cursor Listener",
                             "options": {
                                 "disable_collapse": false,
                                 "disable_edit_json": false,

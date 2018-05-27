@@ -2,7 +2,10 @@
 
 This basic basic-360-VR-Tour is a starting point for your WebVR tour. Replace the images by your own 360 degree equirectangular images generated [Hugin](http://hugin.sourceforge.net/download/) or check out existing [MediaWiki Commons Images with equirectangular projections](https://commons.wikimedia.org/wiki/Category:Equirectangular_projection) and build your own WebVR environment. Please cite the authors when you used the images.
 
-The basic-360-VR-Tour for AFrame was created by Viktor Aigenseer.
+The [basic-360-VR-Tour for AFrame](https://github.com/aigenseer/aframe_basic-360-VR-Tour) was created by Viktor Aigenseer. See also [JSON3D4Aframe for A-Frame Sky](https://niebert.github.io/JSON3D4Aframe/).
+
+## Main Libraries used for editor4location
+* [Handlebars4Code](https://github.com/niebert/Handlebars4Code)
 
 ## Wikiversity Tutorial
 It is recommended to add a [tutorial in Wikiversity](https://en.wikiversity.org/wiki/3D_Modelling/Create_3D_Models/Hugin) to learn about this WebVR tour and to create your create. Regard the basic tour from Viktor Aigenseer as a starting point. Two basic skills are necessary.
