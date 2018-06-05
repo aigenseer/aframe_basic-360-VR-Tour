@@ -1,3 +1,10 @@
+/* ---------------------------------------
+ Package:  aframe_basic-360-VR-Tour
+ Version:  0.1  Date: 2018/06/04 14:18:17
+ Homepage: https://github.com/aigenseer/aframe_basic-360-VR-Tour
+ Author:   Viktor Aigenseer
+ License:  MIT
+ ------------------------------------------ */
 var VideoController = function() {
   var self = this;
   this.videos = {};

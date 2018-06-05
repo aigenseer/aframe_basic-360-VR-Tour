@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>aframe_basic-360-VR-Tour</title>
+
+    <script src="js/3rdpart/jquery.3.3.1.min.js"></script>
+    <script src="js/core.js"></script>
+
+
+
+</head>
+
+<body>
+    <!-- Insert an empty iframe -->
+    <table>
+      <tbody>
+        <tr>
+          <td>BackLink</td>
+          <td><a type="button" class="btn btn-success btn-circle btn-xl">Back</a></td>
+        </tr>
+        <tr>
+          <td>Parameter-Text</td>
+          <td><span>text</span></td>
+        </tr>
+        <tr>
+          <td>URL-Parameter</td>
+          <td><pre></pre></td>
+        </tr>
+      </tbody>
+    <table>
+
+
+
+
+
+    <!-- Initialize the viewer -->
+    <script type="text/javascript">
+    var param = getParamter();
+    console.log(param);
+
+    var id = '7w7pAfrCfjovwykkEeRFLGw5SXS';
+    if(param.hasOwnProperty('id')){
+      id = param.id;
+    }
+
+
+    $(function() {
+      if(param.hasOwnProperty('backurl')) $('a').attr('href', param.backurl);
+
+      if(param.hasOwnProperty('text')){
+        $('span').text(param.text);
+      }
+
+      $('pre').html(JSON.stringify(param));
+
+    });
+
+
+    </script>
+
+</body>
+</html>

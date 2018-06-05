@@ -1,3 +1,10 @@
+/* ---------------------------------------
+ Package:  aframe_basic-360-VR-Tour
+ Version:  0.1  Date: 2018/06/04 14:18:17
+ Homepage: https://github.com/aigenseer/aframe_basic-360-VR-Tour
+ Author:   Viktor Aigenseer
+ License:  MIT
+ ------------------------------------------ */
 (function ( $ ) {
     $.fn.controller = function(options) {
         var self = this;
@@ -17,6 +24,7 @@
         this.l = {};
         self.vc = null;
 
+
         this.link2target = {}
 
         var init = {
@@ -25,18 +33,23 @@
 
             init.tags();
 
-            for (var id in locations) {
-              var e = locations[id];
-              // console.log(id, e);
+            var defaultPage = {
+              id: 0,
+              rotation: 0
+            }
+            var assets_count = 0;
 
-              self.l[id] = {
+            for (var e of locations) {
+              console.log(e);
+
+              self.l[e.name] = {
                 oneActive: false,
                 e: e.e,
                 sky: e.sky
               }
 
               for (var i of e.e) {
-                if(i.hasOwnProperty('data-type') && i.hasOwnProperty('target') && i["data-type"] == 'link' && !self.link2target.hasOwnProperty(i.id) ){
+                if(i.hasOwnProperty('data-type') && i.hasOwnProperty('target') && i["data-type"] === 'link' && !self.link2target.hasOwnProperty(i.id) ){
                   self.link2target[i.id] = i.target;
                 }
               }
@@ -48,18 +61,21 @@
               }
 
               if(e.default){
-                self.openPage(id, e.rotation);
-                // self.activeLocation = id;
-                // self.createEntity(e.e);
-                // self.l[id].oneActive = true;
-                // self.setSky(e.sky);
+                defaultPage.id = e.name;
+                defaultPage.rotation = e.rotation;
               }
-
 
               self.vc = new VideoController();
 
             }//for
 
+            var param = getParamter();
+            if(param.x && param.y && param.z) defaultPage.rotation = param.x+' '+param.y+' '+param.z;
+            if(param.location && self.l.hasOwnProperty(param.location) ){
+              defaultPage.id = param.location;
+            }
+
+            self.openPage(defaultPage.id, defaultPage.rotation);
             init.AFRAME();
 
             return self;
@@ -67,6 +83,12 @@
           },//core
 
           AFRAME: function() {
+            self.cameraEl = null;
+            AFRAME.registerComponent('camera-listener', {
+              tick: function () {
+                self.cameraEl = this.el.sceneEl.camera.el;
+              }
+            });
             AFRAME.registerComponent('cursor-listener', {
               init: function () {
                 var e = this.el
@@ -74,13 +96,49 @@
                 var type = $e.data('type');
                 var id = $e.attr('id');
 
+
                 e.addEventListener('click', function() {
+
                   if(self.s.hasOwnProperty('onClick') && typeof self.s.onClick == 'function'){
                     self.s.onClick(e, id, type);
                     return;
                   }
 
+
                   switch (type) {
+                    case 'info':
+                      var scale = $e.data('info-scal');
+                      var c = $e.data('info-content');
+                      self.info.open(c, scale);
+                    break;
+
+                    case 'info_e':
+                      self.info.close();
+                    break;
+
+                    case 'url':
+
+                      var traget = $e.attr('traget');
+                      var returnbackParameter = $e.attr('returnbackParameter');
+                      var paramString = '';
+
+
+
+                      if(returnbackParameter){
+                        p = self.cameraEl.getAttribute('rotation');
+                        p.location = self.activeLocation;
+                        traget += traget.indexOf('?')>=0? '&' : '?';
+                        traget += "backurl="+encodeURIComponent(location.href.split('?')[0] +'?'+object2Paramter(p));
+                      }
+
+                      if($e.data('text')){
+                        traget += "&text="+encodeURIComponent($e.data('text'));
+                      }
+
+                      window.location.href = traget
+
+                    break;
+
                     case 'link':
                       if(self.link2target.hasOwnProperty(id)){
                           var target = $e.attr('target');
@@ -133,7 +191,7 @@
           tags: function() {
 
             if(self.find('a-scene').length==0){
-              self.$scene = $('<a-scene>');
+              self.$scene = $('<a-scene >');
               self.append(self.$scene);
             }else{
               self.$scene = $('a-scene');
@@ -147,7 +205,7 @@
             }
 
             if(self.find('#sceneCam').length==0){
-              self.$sceneCam = $('<a-entity id="sceneCam" camera look-controls mouse-cursor camera="userHeight: 1.6" rotation="0 190 0" look-controls="" position="" scale="" visible=""></a-entity>');
+              self.$sceneCam = $('<a-entity id="sceneCam" camera look-controls camera-listener mouse-cursor camera="userHeight: 1.6" rotation="0 190 0" look-controls="" position="" scale="" visible=""></a-entity>');
               self.$scene.append(self.$sceneCam);
             }else{
               self.$sceneCam = $('#sceneCam');
@@ -160,6 +218,7 @@
               self.$page = $('#page');
             }
 
+
             if(self.find('a-sky').length==0){
               self.$sky = $('<a-sky id="sky" src="" position="" rotation="" scale="" visible="" material="" geometry=""></a-sky>');
               self.$scene.append(self.$sky);
@@ -169,17 +228,37 @@
 
           }
 
-      };//init
-
+        };//init
 
         var isJSON = function(string) {
           try {
             JSON.parse(string);
+
             return true;
           } catch (e) {
             return false;
           }
         };
+
+        function deUmlaut(value){
+
+          value = value.replace(/ä/g, 'ae');
+          value = value.replace(/ö/g, 'oe');
+          value = value.replace(/ü/g, 'ue');
+          value = value.replace(/ß/g, 'ss');
+
+          value = value.replace(/Ä/g, 'Ae');
+          value = value.replace(/Ö/g, 'Oe');
+          value = value.replace(/Ü/g, 'Ue');
+
+          // console.log(value);
+          // value = value.replace(/ /g, '-');
+          // value = value.replace(/\./g, '');
+          // value = value.replace(/,/g, '');
+          // value = value.replace(/\(/g, '');
+          // value = value.replace(/\)/g, '');
+          return value;
+        }
 
         this.createEntity = function(e) {
           for (var i of e) {
@@ -188,30 +267,46 @@
         };
 
         this.createTag = function($target, t) {
+          if(typeof t != 'object'){
+            console.log('createTag: No Object');
+            return;
+          }
           if($target.find('#'+t.id).length>0) return;
           var $e = $('<'+t.tag+'>');
+
 
           for (var attrName in t) {
             switch (attrName) {
               case 'tag':
                   continue;
                 break;
+              case 'data-info-content':
+                  $e.attr(attrName, JSON.stringify(t[attrName]));
+                  continue;
+                break;
+              case 'text':
+                  $e.attr(attrName, deUmlaut(t[attrName]) );
+                  continue;
+                break;
               default:
-              // console.log(attrName, t[attrName]);
+
               $e.attr(attrName, t[attrName]);
-            }
+
+            }//switch
           }//for
 
+          if(t.tag=='a-text' && t.hasOwnProperty('width')){
+            $e[0].setAttribute('width', t.width-0.01);
+            // $e.append('<a-entity geometry="primitive: plane; height: 1.34; width: 3.26" material="color: black; opacity: .8" position="-0.005 0.332 0.054" rotation="" scale="" visible=""></a-entity>')
+          }
+
           $target.append($e);
+          return $e;
         };//createTag
 
         this.setSky = function(skyId) {
           this.$sky.attr('src', skyId);
         };
-
-        this.create = function(e) {
-          console.log(e);
-        };//visible
 
         this.hideAll = function() {
           $(document).find('#page').html('');
@@ -222,7 +317,7 @@
             console.log('ID not found', id);
             return;
           }
-
+          this.info.close();
           this.hideAll();
           var l = this.l[id];
           self.activeLocation = id;
@@ -256,6 +351,47 @@
           $e.attr('src', id);
         };
 
+        this.info = {
+
+          $e: null,
+
+          open: function(list, scel) {
+            scel = scel || '1.730 1.968 1.000';
+            // console.log(typeof this.$e);
+            if(this.$e != null){
+              this.close();
+              return;
+            }
+
+            this.$e = $('<a-entity position="0.151 1.459 -5.200" rotation="0.344 0 0" data-type="info_e" cursor-listener look-at="#sceneCam" text="align:center;side:double;value:;width:5.11" mixin="null" scale="" visible="">');
+
+            for (var i in list) {
+              var elem = list[i];
+              var $elem = self.createTag(this.$e, elem);
+              if(elem.tag=='a-video'){
+                setTimeout(function() {
+                  console.log($(elem.src)[0]);
+                    $(elem.src)[0].play();
+                }, 1000);
+              }
+            }//for
+
+            // this.$e = $('<a-entity position="0.151 1.459 -5.200" rotation="0.344 0 0" data-type="info_e" cursor-listener look-at="#sceneCam" text="align:center;side:double;value:'+string+';width:5.11" mixin="null" scale="" visible=""></a-entity>');
+            this.$background = $('<a-entity geometry="primitive: plane; height: 1.34; width: 3.26" material="color: black; opacity: .8" position="-0.005 0.332 0.054" rotation="" scale="'+scel+'" visible=""></a-entity>');
+            // this.$x = $('<a-entity position="1.921 0.896 1.218" data-type="info_e" cursor-listener rotation="0.344 0 0" text="align:center;side:double;value:x;width:5.11" mixin="null" scale="" visible=""></a-entity>');
+            this.$e.append(this.$background, this.$x);
+            self.$sceneCam.append(this.$e);
+          },
+
+          close: function() {
+            if(this.$e != null){
+              this.$e.remove();
+              this.$e = null;
+            }
+
+          }
+
+        };//info
 
 
 
