@@ -22,6 +22,7 @@ var locations = [
         visible:      "true",
         material:     "color:#FFF;shader:flat;side:double;transparent:true;src:#arrow",
         geometry:     "primitive:plane;width:200;height:100"
+
       },
       //1a
       {
@@ -61,7 +62,7 @@ var locations = [
             "wrap-count": 60.000,
             scale:    "0.713 0.671 0.844",
             visible:  "true",
-            text: "anchor:center;width:6;font:kelsonsans;value:\nEERES\n\nZur Infrastruktur gehören eine Forschungsstation, zwei Freilandlabore für Still- und Fließgewässer und verschiedene Stationen des Nature Labs;whiteSpace:normal;side:front;baseline:center;align:center"
+            text: "\nEERES\n\nZur Infrastruktur gehören eine Forschungsstation, zwei Freilandlabore für Still- und Fließgewässer und verschiedene Stationen des Nature Labs"
           },
           {
             tag: 'a-image',
@@ -86,7 +87,7 @@ var locations = [
         rotation: "-2.406 -115.508 -0.688",
         scale:    "1.173 2.263 880.586",
         visible:  "true",
-        text: "anchor:center;width:6;font:kelsonsans;value:Seminarraum Freilandlabor\nStillgewaesser;whiteSpace:normal;side:front;baseline:center;align:center",
+        text: "Seminarraum Freilandlabor\nStillgewaesser",
       },
       //1bi
       {
@@ -111,7 +112,7 @@ var locations = [
             position: "-0.036 0.456 0.090",
             scale:    "0.713 0.713 0.844",
             visible:  "true",
-            text: "anchor:center;width:6;font:kelsonsans;value:6 Arbeitsplätze für Wissenschaftler und Werkstatt;whiteSpace:normal;side:front;baseline:center;align:center"
+            text: "6 Arbeitsplätze für Wissenschaftler und Werkstatt"
           }
         ],
         'data-info-scal': "1.588 1.825 1.0"
@@ -127,7 +128,7 @@ var locations = [
         rotation: "0.458 123.129 0.229",
         scale:    "1.077 2.068 880.586",
         visible:  "true",
-        text: "anchor:center;width:6;font:kelsonsans;value:Forschungsstation;whiteSpace:normal;side:front;baseline:center;align:center"
+        text: "Forschungsstation"
       },
       //1ci
       {
@@ -152,40 +153,11 @@ var locations = [
             width: 7,
             scale:    "0.713 0.713 0.844",
             visible:  "true",
-            text: "anchor:center;width:6;font:kelsonsans;value:\nForschung\n\nDer Forschungsschwerpunkt von EERES liegt auf verschiedenen Aspekten anthropogener Einflüsse auf Gewässer;whiteSpace:normal;side:front;baseline:center;align:center"
+            text: "\nForschung\n\nDer Forschungsschwerpunkt von EERES liegt auf verschiedenen Aspekten anthropogener Einflüsse auf Gewässer"
           }
         ],
         'data-info-scal': "1.588 1.825 1.0"
       },
-      //1d
-      /*
-      {
-        tag: 'a-image',
-        id:  '1d',
-        src:          "#info",
-        width:        "200",
-        height:       "100",
-        position:     "4.899 0.421 -3.571",
-        rotation:     "19.767 -87.777 -4.927",
-        scale:        "0.003 0.003 863.974",
-        visible:      "true",
-        material:     "color:#FFF;shader:flat;side:double;transparent:true;src:#info",
-        geometry:     "primitive:plane;width:200;height:100",
-        'data-type':  "info",
-        "cursor-listener": true,
-        'data-info-content': [
-          {
-            tag: 'a-text',
-            width: 7,
-            font:     "kelsonsans",
-            position: "-0.036 0.456 0.090",
-            scale:    "0.713 0.713 0.844",
-            visible:  "true",
-            text: "anchor:center;width:6;font:kelsonsans;value:Die Stillgewässer-Station \"Gewässer-Praxis\" des Nature Labs;whiteSpace:normal;side:front;baseline:center;align:center"
-          }
-        ],
-        'data-info-scal': "1.588 1.825 1.0"
-      },*/
 
       //1e
       {
@@ -210,7 +182,7 @@ var locations = [
             position: "-0.026 1.669 0.386",
             scale:    "0.713 0.671 0.844",
             visible:  "true",
-            text: "anchor:center;width:6;font:kelsonsans;value:Wetterstation\n\nEine Wetterstation mißt kontinuierlich, relative Luftfeuchte, absoluten Luftdruck, Windrichtung, Windrichtung, Windgeschwindigkeit,  Niederschlag, Globalstrahlung, Bodentemperatur;whiteSpace:normal;side:front;baseline:center;align:center"
+            text: "\nWetterstation\n\nEine Wetterstation mißt kontinuierlich, relative Luftfeuchte, absoluten Luftdruck, Windrichtung, Windrichtung, Windgeschwindigkeit,  Niederschlag, Globalstrahlung, Bodentemperatur"
           },
           {
             tag: 'a-image',
@@ -237,7 +209,7 @@ var locations = [
         rotation: "-4.641 -114.420 2.636",
         scale:    "1.173 2.263 880.586",
         visible:  "true",
-        text: "anchor:center;width:6;font:kelsonsans;value:Altes Bruthaus;whiteSpace:normal;side:front;baseline:center;align:center",
+        text: "Altes Bruthaus",
       },
       //1gi
       {
@@ -263,7 +235,7 @@ var locations = [
             position: "-0.026 1.463 0.330",
             scale:    "0.713 0.671 0.844",
             visible:  "true",
-            text: "anchor:center;width:6;font:kelsonsans;value:\nAltes Bruthaus\n\nIm Alten Bruthaus ist eine Fließgerinneanlage mit 16 Rinnen installiert. Hier finden Untersuchungen zur Entwicklung von Gemeinschaften in Gewässern unter verschiedenen Umweltbedingungen (z.B. Temperatur, Strömungsgeschwindigkeit)  statt;whiteSpace:normal;side:front;baseline:center;align:center"
+            text: "\nAltes Bruthaus\n\nIm Alten Bruthaus ist eine Fließgerinneanlage mit 16 Rinnen installiert. Hier finden Untersuchungen zur Entwicklung von Gemeinschaften in Gewässern unter verschiedenen Umweltbedingungen (z.B. Temperatur, Strömungsgeschwindigkeit)  statt"
           },
           {
             tag:      'a-image',
@@ -420,7 +392,7 @@ var locations = [
             position: "-0.036 0.456 0.090",
             scale:    "0.713 0.713 0.844",
             visible:  "true",
-            text: "anchor:center;width:6;font:kelsonsans;value:\nBiofilm\n\nDas Biofilmwachstum wird in den Auenbecken auf künstlichen Substraten untersucht;whiteSpace:normal;side:front;baseline:center;align:center"
+            text: "\nBiofilm\n\nDas Biofilmwachstum wird in den Auenbecken auf künstlichen Substraten untersucht"
           }
         ],
         'data-info-scal': "1.588 1.825 1.0"
@@ -448,7 +420,7 @@ var locations = [
             position: "-0.036 0.456 0.090",
             scale:    "0.713 0.713 0.844",
             visible:  "true",
-            text: "anchor:center;width:6;font:kelsonsans;value:\nBenthos\n\nDurch eingebrachte Benthos-Fallen, wird die Entwicklung der benthischen Gemeinschaft in den Auen-Becken untersucht;whiteSpace:normal;side:front;baseline:center;align:center"
+            text: "\nBenthos\n\nDurch eingebrachte Benthos-Fallen, wird die Entwicklung der benthischen Gemeinschaft in den Auen-Becken untersucht"
           }
         ],
         'data-info-scal': "1.588 1.825 1.0"
@@ -476,7 +448,7 @@ var locations = [
             position: "-0.036 0.456 0.090",
             scale:    "0.713 0.713 0.844",
             visible:  "true",
-            text: "anchor:center;width:6;font:kelsonsans;value:Der Wasserstand in den Auen-Becken wird für das Langzeitmonitoring konstant bei 30 cm gehalten. Die Wasserzuläufe und -abflüsse der Auen-Becken sind jedoch auch regelbar;whiteSpace:normal;side:front;baseline:center;align:center"
+            text: "Der Wasserstand in den Auen-Becken wird für das Langzeitmonitoring konstant bei 30 cm gehalten. Die Wasserzuläufe und -abflüsse der Auen-Becken sind jedoch auch regelbar"
           }
         ],
         'data-info-scal': "1.588 1.825 1.0"
@@ -504,7 +476,7 @@ var locations = [
             position: "-0.026 1.669 0.386",
             scale:    "0.713 0.671 0.844",
             visible:  "true",
-            text: "anchor:center;width:6;font:kelsonsans;value:\nAbiotische Parameter\n\nIn den Auen-Becken werden u.a. der Sauerstoffgehalt, Temperatur und Lichtintensität kontinuierlich aufgenommen;whiteSpace:normal;side:front;baseline:center;align:center"
+            text: "\nAbiotische Parameter\n\nIn den Auen-Becken werden u.a. der Sauerstoffgehalt, Temperatur und Lichtintensität kontinuierlich aufgenommen"
           },
           {
             tag: 'a-image',
@@ -541,7 +513,7 @@ var locations = [
             position: "-0.036 0.456 0.090",
             scale:    "0.713 0.713 0.844",
             visible:  "true",
-            text: "anchor:center;width:6;font:kelsonsans;value:\nZersetzung von Laubstreu\n\nDie Zersetzungsrate von Laubstreu wird sowohl im aquatischen wie auch im angrenzenden terrestrischen Bereich untersucht. Durch das Einbringen von Laub- bzw. Teebeuteln, kann die Aktivität von mikrobiellen Zersetzern sowie detritivoren Wirbellosen bestimmt werden;whiteSpace:normal;side:front;baseline:center;align:center"
+            text: "\nZersetzung von Laubstreu\n\nDie Zersetzungsrate von Laubstreu wird sowohl im aquatischen wie auch im angrenzenden terrestrischen Bereich untersucht. Durch das Einbringen von Laub- bzw. Teebeuteln, kann die Aktivität von mikrobiellen Zersetzern sowie detritivoren Wirbellosen bestimmt werden"
           }
         ],
         'data-info-scal': "1.888 2.1 1.0"
@@ -569,7 +541,7 @@ var locations = [
             position: "-0.036 0.456 0.090",
             scale:    "0.713 0.713 0.844",
             visible:  "true",
-            text: "anchor:center;width:6;font:kelsonsans;value:\nWasser-Land-Übergangsbereich\n\nAuf der Entwicklungsfläche wird die Entwicklungen der Pflanzen- und Laufkäfergemeinschaft untersucht ;whiteSpace:normal;side:front;baseline:center;align:center"
+            text: "\nWasser-Land-Übergangsbereich\n\nAuf der Entwicklungsfläche wird die Entwicklungen der Pflanzen- und Laufkäfergemeinschaft untersucht"
           }
         ],
         'data-info-scal': "1.588 1.825 1.0"
@@ -604,7 +576,7 @@ var locations = [
         rotation: "0 160.000 0",
         scale:    "0.800 1.2 880.586",
         visible:  "true",
-        text: "anchor:center;width:6;font:kelsonsans;value:Auen-Becken;whiteSpace:normal;side:front;baseline:center;align:center"
+        text: "Auen-Becken"
       },
       //2hi
       {
@@ -629,7 +601,7 @@ var locations = [
             position: "-0.036 0.456 0.090",
             scale:    "0.713 0.713 0.844",
             visible:  "true",
-            text: "anchor:center;width:6;font:kelsonsans;value:\nLangzeitmonitoring\n\nDie Initialphase der Ökosystementwicklung der 12 Auen-Becken nach einem genau definierbaren \"Punkt Null\" wird mittels eines umfangreichen Langzeit-Umweltmonitoringprogramm untersucht. Das Monitoring umfasst kontinuierliche oder regelmäßige Messungen unterschiedlicher abiotischer und biotischer Parameter;whiteSpace:normal;side:front;baseline:center;align:center"
+            text: "\nLangzeitmonitoring\n\nDie Initialphase der Ökosystementwicklung der 12 Auen-Becken nach einem genau definierbaren \"Punkt Null\" wird mittels eines umfangreichen Langzeit-Umweltmonitoringprogramm untersucht. Das Monitoring umfasst kontinuierliche oder regelmäßige Messungen unterschiedlicher abiotischer und biotischer Parameter"
           }
         ],
         'data-info-scal': "1.671 2.5 1.0"
@@ -657,7 +629,7 @@ var locations = [
             scale:    "0.713 0.612 0.844",
             width: 7,
             visible:  "true",
-            text: "anchor:center;width:6;font:kelsonsans;value:\nFreilandlabor Stillgewässer\n\nDie Teiche der ehmaligen Fischzuchtanlage wurden im Rahmen der Aktion Blau Plus des Landes RLP renaturiert. Es wurden 12 steuerbare Auenretentionsbecken geschaffen, die Forschung zur den Themen Hochwasserschutz und der Auen-Ökologie ermöglichen;whiteSpace:normal;side:front;baseline:center;align:center"
+            text: "\nFreilandlabor Stillgewässer\n\nDie Teiche der ehmaligen Fischzuchtanlage wurden im Rahmen der Aktion Blau Plus des Landes RLP renaturiert. Es wurden 12 steuerbare Auenretentionsbecken geschaffen, die Forschung zur den Themen Hochwasserschutz und der Auen-Ökologie ermöglichen"
           },
           {
             tag: 'a-video',

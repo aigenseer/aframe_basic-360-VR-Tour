@@ -15,6 +15,7 @@
             // onMouseleave: function(e, id, type) {}
         }
         this.s = $.extend(this.s, options);
+        this.modeVr = false;
 
         this.img = {
           default: '#arrow',
@@ -23,15 +24,19 @@
         this.activeLocation = '';
         this.l = {};
         self.vc = null;
+        self.resize = 0;
 
 
         this.link2target = {}
+
 
         var init = {
 
           core: function() {
 
             init.tags();
+
+
 
             var defaultPage = {
               id: 0,
@@ -83,12 +88,101 @@
           },//core
 
           AFRAME: function() {
+
+            var runClick = function($e) {
+              console.log('click');
+              var type = $e.data('type');
+              var id = $e.attr('id');
+
+              if(self.s.hasOwnProperty('onClick') && typeof self.s.onClick == 'function'){
+                self.s.onClick(e, id, type);
+                return;
+              }
+
+
+              switch (type) {
+                case 'info':
+                  var scale = $e.data('info-scal');
+                  var c = $e.data('info-content');
+                  self.info.open(c, scale);
+                break;
+
+                case 'info_e':
+                  self.info.close();
+                break;
+
+                case 'url':
+
+                  var traget = $e.attr('traget');
+                  var returnbackParameter = $e.attr('returnbackParameter');
+                  var paramString = '';
+
+
+
+                  if(returnbackParameter){
+                    p = self.cameraEl.getAttribute('rotation');
+                    p.location = self.activeLocation;
+                    traget += traget.indexOf('?')>=0? '&' : '?';
+                    traget += "backurl="+encodeURIComponent(location.href.split('?')[0] +'?'+object2Paramter(p));
+                  }
+
+                  if($e.data('text')){
+                    traget += "&text="+encodeURIComponent($e.data('text'));
+                  }
+
+                  window.location.href = traget
+
+                break;
+
+                case 'link':
+                  if(self.link2target.hasOwnProperty(id)){
+                      var target = $e.attr('target');
+                      var rotation = '';
+
+
+                      if(isJSON(target)){
+                        var r = JSON.parse(target.toString());
+                        target = r.id;
+                        rotation = r.rotation;
+                      }
+                      // console.log(target, rotation);
+                      self.openPage(target, rotation);
+                  }
+                  break;
+                case 'video':
+                    self.vc.play($e.attr('src').slice(1));
+                  break;
+                case 'wrapper':
+
+                    runClick(self.$scene.find('#'+$e.attr('target')));
+                  break;
+
+                default:
+                console.log('No Type for ', type);
+              }//switch
+
+            }//runClick
+
+
             self.cameraEl = null;
             AFRAME.registerComponent('camera-listener', {
               tick: function () {
                 self.cameraEl = this.el.sceneEl.camera.el;
               }
             });
+
+            self.$scene.on('enter-vr', function() {
+              self.modeVr = true;
+              setTimeout(function() {
+                self.openPage(self.activeLocation);
+              }, 500);
+              console.log(self.modeVr);
+            });
+
+            self.$scene.on('exit-vr', function() {
+              self.modeVr = false;
+            });
+
             AFRAME.registerComponent('cursor-listener', {
               init: function () {
                 var e = this.el
@@ -98,70 +192,7 @@
 
 
                 e.addEventListener('click', function() {
-
-                  if(self.s.hasOwnProperty('onClick') && typeof self.s.onClick == 'function'){
-                    self.s.onClick(e, id, type);
-                    return;
-                  }
-
-
-                  switch (type) {
-                    case 'info':
-                      var scale = $e.data('info-scal');
-                      var c = $e.data('info-content');
-                      self.info.open(c, scale);
-                    break;
-
-                    case 'info_e':
-                      self.info.close();
-                    break;
-
-                    case 'url':
-
-                      var traget = $e.attr('traget');
-                      var returnbackParameter = $e.attr('returnbackParameter');
-                      var paramString = '';
-
-
-
-                      if(returnbackParameter){
-                        p = self.cameraEl.getAttribute('rotation');
-                        p.location = self.activeLocation;
-                        traget += traget.indexOf('?')>=0? '&' : '?';
-                        traget += "backurl="+encodeURIComponent(location.href.split('?')[0] +'?'+object2Paramter(p));
-                      }
-
-                      if($e.data('text')){
-                        traget += "&text="+encodeURIComponent($e.data('text'));
-                      }
-
-                      window.location.href = traget
-
-                    break;
-
-                    case 'link':
-                      if(self.link2target.hasOwnProperty(id)){
-                          var target = $e.attr('target');
-                          var rotation = '';
-
-
-                          if(isJSON(target)){
-                            var r = JSON.parse(target.toString());
-                            target = r.id;
-                            rotation = r.rotation;
-                          }
-                          // console.log(target, rotation);
-                          self.openPage(target, rotation);
-                      }
-                      break;
-                    case 'video':
-                        self.vc.play($e.attr('src').slice(1));
-                      break;
-
-                    default:
-                    console.log('No Type for ', type);
-                  }//switch
-
+                  runClick($e);
                 });//click
 
                 e.addEventListener('mouseenter', function() {
@@ -190,12 +221,29 @@
 
           tags: function() {
 
+
             if(self.find('a-scene').length==0){
-              self.$scene = $('<a-scene >');
+              self.$scene = $('<a-scene>');
               self.append(self.$scene);
             }else{
               self.$scene = $('a-scene');
             }
+
+            self.controls = {};
+            if(self.find('[vive-controls="hand: left"]').length==0){
+              self.controls.$left = $('<a-entity vive-controls="hand: left" controller-cursor></a-entity>');
+              self.$scene.append(self.controls.$left);
+            }else{
+              self.controls.$left = $('[vive-controls="hand: left"]');
+            }
+
+            if(self.find('[vive-controls="hand: right"]').length==0){
+              self.controls.$right = $('<a-entity vive-controls="hand: right" controller-cursor></a-entity>');
+              self.$scene.append(self.controls.$right);
+            }else{
+              self.controls.$right = $('[vive-controls="hand: right"]');
+            }
+
 
             if(self.find('a-assets').length==0){
               self.$assets = $('<a-assets>');
@@ -205,7 +253,7 @@
             }
 
             if(self.find('#sceneCam').length==0){
-              self.$sceneCam = $('<a-entity id="sceneCam" camera look-controls camera-listener mouse-cursor camera="userHeight: 1.6" rotation="0 190 0" look-controls="" position="" scale="" visible=""></a-entity>');
+              self.$sceneCam = $('<a-entity id="sceneCam" camera="" look-controls camera-listener mouse-cursor camera="userHeight: 1.6" rotation="0 190 0" look-controls="" position="" scale="" visible=""></a-entity>');
               self.$scene.append(self.$sceneCam);
             }else{
               self.$sceneCam = $('#sceneCam');
@@ -272,8 +320,8 @@
             return;
           }
           if($target.find('#'+t.id).length>0) return;
+          // console.log(t.tag);
           var $e = $('<'+t.tag+'>');
-
 
           for (var attrName in t) {
             switch (attrName) {
@@ -285,10 +333,16 @@
                   continue;
                 break;
               case 'text':
-                  $e.attr(attrName, deUmlaut(t[attrName]) );
+                  var text = deUmlaut(t[attrName]);
+                  if(text.indexOf(':')<0 && text.indexOf(':')<0){
+                    text = 'font: https://cdn.aframe.io/fonts/mozillavr.fnt;anchor:center;width:6;font:kelsonsans;value:'+text+';whiteSpace:normal;side:double;baseline:center;align:center';
+                  }
+                  $e.attr(attrName, text);
                   continue;
                 break;
+
               default:
+
 
               $e.attr(attrName, t[attrName]);
 
@@ -300,7 +354,40 @@
             // $e.append('<a-entity geometry="primitive: plane; height: 1.34; width: 3.26" material="color: black; opacity: .8" position="-0.005 0.332 0.054" rotation="" scale="" visible=""></a-entity>')
           }
 
+          // console.log(t.hasOwnProperty('data-type'), t['data-type']);
+          if(self.modeVr==true && t.tag==='a-image' && t.hasOwnProperty('data-type') && (t['data-type'] === 'info' || t['data-type'] === 'link')){
+            var $wrapper = $('<a-entity data-type="wrapper" cursor-listener geometry="primitive: plane; height: 1.34; width: 3.26" material="side: double; color: black; opacity: .0" rotation="0 -180 0" visible=""></a-entity>');
+            // var $wrapper = $('<a-entity data-type="wrapper" cursor-listener look-at="#sceneCam" text="align:center;side:double;value:;width:5.11" mixin="null" scale="" visible="" ></a-entity>');
+
+            var scale = t.scale.split(' ');
+            scale[0] = parseFloat(scale[0])+0.5;
+            scale[1] = parseFloat(scale[1])+1;
+            scale[2] = parseFloat(scale[2])+1;
+            var position = t.position.split(' ');
+            position[0] = parseFloat(position[0]);
+            position[1] = parseFloat(position[1]);
+            position[2] = parseFloat(position[2]);
+            position[0] += position[0]>0? 0.1 : -0.1;
+            position[1] += position[1]>0? 0.1 : -0.1;
+
+            $wrapper.attr({
+              'position': position.join(' '),
+              'rotation': t.rotation,
+              'scale': scale.join(' '),
+              'target': t.id
+            });
+
+            // $wrapper.append($e);
+            $target.append($wrapper);
+          }else{
+            // $target.append($e);
+          }
+
+          if(self.modeVr==true && t.tag==='a-image' && t.hasOwnProperty('data-type') && t['data-type'] === 'url') return $e;
+
+
           $target.append($e);
+
           return $e;
         };//createTag
 
@@ -364,6 +451,10 @@
             }
 
             this.$e = $('<a-entity position="0.151 1.459 -5.200" rotation="0.344 0 0" data-type="info_e" cursor-listener look-at="#sceneCam" text="align:center;side:double;value:;width:5.11" mixin="null" scale="" visible="">');
+            if(self.modeVr){
+              this.$e.attr('position', '0.151 0.0 -5.200');
+              this.$e.attr('scale', '0.7 0.7 1');
+            }
 
             for (var i in list) {
               var elem = list[i];
