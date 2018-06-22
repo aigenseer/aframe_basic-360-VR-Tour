@@ -29,14 +29,42 @@
 
         this.link2target = {}
 
+        this.vr = {
+
+          enable: false,
+
+          append: function() {
+            self.vr.enable = true;
+            self.controls = {};
+            if(self.find('[vive-controls="hand: left"]').length==0){
+              self.controls.$left = $('<a-entity vive-controls="hand: left" controller-cursor></a-entity>');
+              self.$scene.append(self.controls.$left);
+            }else{
+              self.controls.$left = $('[vive-controls="hand: left"]');
+            }
+
+            if(self.find('[vive-controls="hand: right"]').length==0){
+              self.controls.$right = $('<a-entity vive-controls="hand: right" controller-cursor></a-entity>');
+              self.$scene.append(self.controls.$right);
+            }else{
+              self.controls.$right = $('[vive-controls="hand: right"]');
+            }
+          },
+
+          remove: function() {
+            self.vr.enable = false;
+            self.controls.$left.remove();
+            self.controls.$right.remove();
+          }
+
+        }
+
 
         var init = {
 
           core: function() {
 
             init.tags();
-
-
 
             var defaultPage = {
               id: 0,
@@ -45,7 +73,7 @@
             var assets_count = 0;
 
             for (var e of locations) {
-              console.log(e);
+              // console.log(e);
 
               self.l[e.name] = {
                 oneActive: false,
@@ -172,15 +200,14 @@
             });
 
             self.$scene.on('enter-vr', function() {
-              self.modeVr = true;
+              self.vr.append();
               setTimeout(function() {
                 self.openPage(self.activeLocation);
               }, 500);
-              console.log(self.modeVr);
             });
 
             self.$scene.on('exit-vr', function() {
-              self.modeVr = false;
+              self.vr.remove();
             });
 
             AFRAME.registerComponent('cursor-listener', {
@@ -189,7 +216,6 @@
                 var $e = $(e);
                 var type = $e.data('type');
                 var id = $e.attr('id');
-
 
                 e.addEventListener('click', function() {
                   runClick($e);
@@ -227,21 +253,6 @@
               self.append(self.$scene);
             }else{
               self.$scene = $('a-scene');
-            }
-
-            self.controls = {};
-            if(self.find('[vive-controls="hand: left"]').length==0){
-              self.controls.$left = $('<a-entity vive-controls="hand: left" controller-cursor></a-entity>');
-              self.$scene.append(self.controls.$left);
-            }else{
-              self.controls.$left = $('[vive-controls="hand: left"]');
-            }
-
-            if(self.find('[vive-controls="hand: right"]').length==0){
-              self.controls.$right = $('<a-entity vive-controls="hand: right" controller-cursor></a-entity>');
-              self.$scene.append(self.controls.$right);
-            }else{
-              self.controls.$right = $('[vive-controls="hand: right"]');
             }
 
 
@@ -299,12 +310,6 @@
           value = value.replace(/Ö/g, 'Oe');
           value = value.replace(/Ü/g, 'Ue');
 
-          // console.log(value);
-          // value = value.replace(/ /g, '-');
-          // value = value.replace(/\./g, '');
-          // value = value.replace(/,/g, '');
-          // value = value.replace(/\(/g, '');
-          // value = value.replace(/\)/g, '');
           return value;
         }
 
@@ -351,13 +356,12 @@
 
           if(t.tag=='a-text' && t.hasOwnProperty('width')){
             $e[0].setAttribute('width', t.width-0.01);
-            // $e.append('<a-entity geometry="primitive: plane; height: 1.34; width: 3.26" material="color: black; opacity: .8" position="-0.005 0.332 0.054" rotation="" scale="" visible=""></a-entity>')
           }
 
-          // console.log(t.hasOwnProperty('data-type'), t['data-type']);
-          if(self.modeVr==true && t.tag==='a-image' && t.hasOwnProperty('data-type') && (t['data-type'] === 'info' || t['data-type'] === 'link')){
+
+          if(self.vr.enable==true && t.tag==='a-image' && t.hasOwnProperty('data-type') && (t['data-type'] === 'info' || t['data-type'] === 'link')){
             var $wrapper = $('<a-entity data-type="wrapper" cursor-listener geometry="primitive: plane; height: 1.34; width: 3.26" material="side: double; color: black; opacity: .0" rotation="0 -180 0" visible=""></a-entity>');
-            // var $wrapper = $('<a-entity data-type="wrapper" cursor-listener look-at="#sceneCam" text="align:center;side:double;value:;width:5.11" mixin="null" scale="" visible="" ></a-entity>');
+
 
             var scale = t.scale.split(' ');
             scale[0] = parseFloat(scale[0])+0.5;
@@ -369,6 +373,7 @@
             position[2] = parseFloat(position[2]);
             position[0] += position[0]>0? 0.1 : -0.1;
             position[1] += position[1]>0? 0.1 : -0.1;
+            position[2] += position[2]>0? 0.1 : -0.1;
 
             $wrapper.attr({
               'position': position.join(' '),
@@ -376,14 +381,10 @@
               'scale': scale.join(' '),
               'target': t.id
             });
-
-            // $wrapper.append($e);
             $target.append($wrapper);
-          }else{
-            // $target.append($e);
           }
 
-          if(self.modeVr==true && t.tag==='a-image' && t.hasOwnProperty('data-type') && t['data-type'] === 'url') return $e;
+          if(self.vr.enable==true && t.tag==='a-image' && t.hasOwnProperty('data-type') && t['data-type'] === 'url') return $e;
 
 
           $target.append($e);
@@ -451,7 +452,7 @@
             }
 
             this.$e = $('<a-entity position="0.151 1.459 -5.200" rotation="0.344 0 0" data-type="info_e" cursor-listener look-at="#sceneCam" text="align:center;side:double;value:;width:5.11" mixin="null" scale="" visible="">');
-            if(self.modeVr){
+            if(self.vr.enable){
               this.$e.attr('position', '0.151 0.0 -5.200');
               this.$e.attr('scale', '0.7 0.7 1');
             }

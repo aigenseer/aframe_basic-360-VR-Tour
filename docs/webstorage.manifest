@@ -1,0 +1,20 @@
+CACHE MANIFEST
+# 2018-02-12 v0.3
+CACHE:
+assets/video.png
+assets/pic.png
+assets/object.png
+assets/info.png
+assets/arrow.svg
+assets/arrow_hover.svg
+assets/1/bruthaus1.jpg
+assets/1/bruthaus2.jpg
+assets/1/eeres_logo.png
+assets/1/luftbild.png
+assets/1/p1.jpg
+assets/1/wetterstation.png
+assets/2/Daten_2d.png
+assets/2/grasfrosch.png
+assets/2/p2.jpg
+assets/2/stillgewaesser_frueher.mp4
+https://cdn.aframe.io/fonts/mozillavr.fnt
